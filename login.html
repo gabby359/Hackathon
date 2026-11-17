@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AniDirect — Sign In</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="login-body">
+  <div class="login-wrapper">
+    <div class="login-header">
+      <div class="logo-mark large">🌱</div>
+      <h1>AniDirect</h1>
+      <p>Direct Farm-to-Barangay Bulk Pooling &amp; Community Pantry Platform</p>
+      <div class="sdg-row">
+        <span class="sdg-pill">SDG 2 • Zero Hunger</span>
+        <span class="sdg-pill alt">SDG 12 • Responsible Consumption</span>
+      </div>
+    </div>
+
+    <div class="login-card">
+      <h2>Select Account Role to Continue</h2>
+      <p class="subtitle">Choose a verified demo profile or sign in as a Barangay Member.</p>
+
+      <!-- Quick Role Cards for Instant Hackathon Demo -->
+      <div class="role-cards">
+        <button class="role-select-card" onclick="loginAsPreset('member-sf')">
+          <span class="role-icon">🏘️</span>
+          <div class="role-info">
+            <strong>Barangay Member</strong>
+            <span>Juan Dela Cruz • Brgy. San Francisco, Gen. Trias</span>
+            <small>Browse farmer harvests, pre-order shares &amp; chip in (Ambag)</small>
+          </div>
+          <span class="arrow">→</span>
+        </button>
+
+        <button class="role-select-card" onclick="loginAsPreset('barangay-sf')">
+          <span class="role-icon">🏛️</span>
+          <div class="role-info">
+            <strong>Barangay Official / Pantry Admin</strong>
+            <span>Kap. Elena Mendoza • Brgy. San Francisco Hub</span>
+            <small>Track Community Pantry ambag stock &amp; sponsor bulk pools</small>
+          </div>
+          <span class="arrow">→</span>
+        </button>
+
+        <button class="role-select-card" onclick="loginAsPreset('farmer-renato')">
+          <span class="role-icon">🚜</span>
+          <div class="role-info">
+            <strong>Verified Local Farmer</strong>
+            <span>Mang Renato Bautista • Indang, Cavite</span>
+            <small>Post monthly harvest batches, prices &amp; bulk targets</small>
+          </div>
+          <span class="arrow">→</span>
+        </button>
+      </div>
+
+      <div class="divider"><span>or sign in as a custom Barangay Member</span></div>
+
+      <form onsubmit="handleCustomMemberLogin(event)" class="custom-login-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Your Full Name</label>
+            <input type="text" id="customName" placeholder="e.g., Maria Santos" required />
+          </div>
+          <div class="form-group">
+            <label>Select Your Barangay</label>
+            <select id="customBarangay">
+              <option value="Brgy. San Francisco, General Trias">Brgy. San Francisco, General Trias</option>
+              <option value="Brgy. Poblacion I, Indang">Brgy. Poblacion I, Indang</option>
+              <option value="Brgy. Kaybagal South, Tagaytay">Brgy. Kaybagal South, Tagaytay</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="order-btn full-btn">Enter as Barangay Member →</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/storage.js"></script>
+  <script>
+    function loginAsPreset(accountId) {
+      setCurrentUserById(accountId);
+      redirectUserByRole();
+    }
+
+    function handleCustomMemberLogin(e) {
+      e.preventDefault();
+      const name = document.getElementById("customName").value.trim();
+      const barangay = document.getElementById("customBarangay").value;
+      setCustomMemberUser(name, barangay);
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

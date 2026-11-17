@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AniDirect — Barangay Member Pool</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="brand">
+        <div class="logo-mark">🌱</div>
+        <div>
+          <div class="brand-title-row">
+            <h1>AniDirect</h1>
+            <span class="sdg-pill">SDG 2</span>
+            <span class="sdg-pill alt">SDG 12</span>
+          </div>
+          <p id="active-user-subtitle">Logged in as Barangay Member</p>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <nav class="role-switcher">
+          <a href="index.html" class="tab-btn active">🏘️ Member Pool</a>
+          <a href="barangay.html" class="tab-btn">🏛️ Barangay Hub</a>
+          <a href="farmer.html" class="tab-btn">🚜 Farmer Portal</a>
+        </nav>
+        <a href="login.html" class="switch-account-btn">Switch Account</a>
+        <button class="reset-btn" onclick="resetDemoData()">↺ Reset</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="impact-banner">
+    <div class="impact-container">
+      <div class="impact-intro">
+        <span class="hub-tag" id="user-barangay-badge">📍 Brgy. San Francisco, General Trias</span>
+        <h2 id="welcome-headline">Welcome back! Browse farmer harvests and chip in for your Barangay Pantry.</h2>
+      </div>
+      <div class="impact-stats" id="impact-stats"></div>
+    </div>
+  </section>
+
+  <main class="container">
+    <div class="section-header">
+      <div>
+        <h2>Direct Farmer Harvest Posts</h2>
+        <p class="subtitle">Order wholesale produce for your home or ambag directly to your barangay's free community pantry.</p>
+      </div>
+
+      <div class="filter-group">
+        <label for="month-filter">Harvest Month:</label>
+        <select id="month-filter" onchange="renderHarvests()">
+          <option value="All">All Upcoming Months</option>
+          <option value="November 2026">November 2026</option>
+          <option value="December 2026">December 2026</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="harvest-grid" class="grid"></div>
+  </main>
+
+  <div id="checkout-modal" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-title">Confirm Community Pool Pre-Order</h3>
+        <button class="close-modal" onclick="closeModal()">✕</button>
+      </div>
+      <div id="modal-body" class="modal-body"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/buyer.js"></script>
+</body>
+</html>

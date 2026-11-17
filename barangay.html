@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AniDirect — Barangay Pantry Coordinator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="brand">
+        <div class="logo-mark">🏛️</div>
+        <div>
+          <div class="brand-title-row">
+            <h1>AniDirect</h1>
+            <span class="sdg-pill">Barangay Hub Admin</span>
+          </div>
+          <p id="barangay-admin-subtitle">Kap. Elena Mendoza • Brgy. San Francisco, General Trias</p>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <nav class="role-switcher">
+          <a href="index.html" class="tab-btn">🏘️ Member Pool</a>
+          <a href="barangay.html" class="tab-btn active">🏛️ Barangay Hub</a>
+          <a href="farmer.html" class="tab-btn">🚜 Farmer Portal</a>
+        </nav>
+        <a href="login.html" class="switch-account-btn">Switch Account</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="section-header">
+      <div>
+        <h2>Brgy. San Francisco — Pantry &amp; Bulk Delivery Manifest</h2>
+        <p class="subtitle">Monitor verified resident ambag contributions, free community pantry stock, and incoming farm deliveries.</p>
+      </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="grid" style="margin-bottom: 2rem;" id="barangay-summary-cards"></div>
+
+    <!-- Verified Barangay Members & Current Ambag Table -->
+    <div class="form-card" style="max-width: 100%; overflow-x: auto; margin-bottom: 2rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+        <div>
+          <h3 style="margin-bottom: 0.2rem;">Verified Barangay Members &amp; Current Ambag</h3>
+          <p class="subtitle">Registered residents of Brgy. San Francisco contributing to the current bulk order cycle.</p>
+        </div>
+        <span class="badge" id="verified-member-count">0 Verified Members</span>
+      </div>
+
+      <table class="manifest-table">
+        <thead>
+          <tr>
+            <th>Verified Member</th>
+            <th>Purok / Address</th>
+            <th>Verification Status</th>
+            <th>Latest Ambag Activity</th>
+            <th>Total Ambag (kg)</th>
+            <th>Total Ambag Value</th>
+          </tr>
+        </thead>
+        <tbody id="verified-members-body"></tbody>
+      </table>
+    </div>
+
+    <!-- Incoming Harvest Batches Table -->
+    <div class="form-card" style="max-width: 100%; overflow-x: auto;">
+      <h3 style="margin-bottom: 0.25rem;">Incoming Farm Harvest Batches &amp; Pantry Breakdown</h3>
+      <p class="subtitle" style="margin-bottom: 1rem;">Barangay officials can sponsor +20 kg from the Nutrition Fund to help lock pools faster.</p>
+
+      <table class="manifest-table">
+        <thead>
+          <tr>
+            <th>Crop &amp; Farmer</th>
+            <th>Harvest Window</th>
+            <th>Member Pre-Orders</th>
+            <th>🧺 Member Ambag (Free Pantry)</th>
+            <th>Pool Status</th>
+            <th>Barangay Action</th>
+          </tr>
+        </thead>
+        <tbody id="barangay-manifest-body"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/barangay.js"></script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AniDirect — Farmer Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="brand">
+        <div class="logo-mark">🚜</div>
+        <div>
+          <div class="brand-title-row">
+            <h1>AniDirect</h1>
+            <span class="sdg-pill">Verified Farmer Account</span>
+          </div>
+          <p id="farmer-account-subtitle">Mang Renato Bautista • Indang, Cavite</p>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <nav class="role-switcher">
+          <a href="index.html" class="tab-btn">🏘️ Member Pool</a>
+          <a href="barangay.html" class="tab-btn">🏛️ Barangay Hub</a>
+          <a href="farmer.html" class="tab-btn active">🚜 Farmer Portal</a>
+        </nav>
+        <a href="login.html" class="switch-account-btn">Switch Account</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="farmer-layout">
+      <div class="form-card">
+        <div class="form-header">
+          <span class="farmer-badge">Direct Farm-Gate Listing</span>
+          <h2>Post Monthly Harvest Batch</h2>
+          <p class="subtitle">Publish your upcoming harvest directly to Barangay Members and Community Pantries.</p>
+        </div>
+
+        <form id="farmer-form" onsubmit="handleFarmerSubmit(event)">
+          <div class="form-group">
+            <label>Crop / Produce Name</label>
+            <input type="text" id="cropName" placeholder="e.g., Native Sweet Corn (Grade A)" required />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Farmer / Coop Name</label>
+              <input type="text" id="farmerName" required />
+            </div>
+            <div class="form-group">
+              <label>Farm Location</label>
+              <input type="text" id="location" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Harvest Month</label>
+              <select id="harvestMonth">
+                <option value="November 2026">November 2026</option>
+                <option value="December 2026">December 2026</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Expected Harvest Window</label>
+              <input type="text" id="harvestWindow" value="Nov 28 – Dec 3" required />
+            </div>
+          </div>
+
+          <div class="form-row three-col">
+            <div class="form-group">
+              <label>Your Price (₱/kg)</label>
+              <input type="number" id="bulkPrice" placeholder="40" min="1" required />
+            </div>
+            <div class="form-group">
+              <label>Market Price (₱/kg)</label>
+              <input type="number" id="marketPrice" placeholder="85" min="1" required />
+            </div>
+            <div class="form-group">
+              <label>Bulk Goal (kg)</label>
+              <input type="number" id="targetKg" placeholder="200" min="10" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Upload Crop Photo</label>
+            <div class="upload-box">
+              <input type="file" id="cropPhoto" accept="image/*" onchange="previewFarmerImage(event)" />
+              <img id="photo-preview" class="photo-preview hidden" alt="Preview" />
+            </div>
+          </div>
+
+          <button type="submit" class="submit-btn">Publish Harvest to Barangay Pools →</button>
+        </form>
+      </div>
+
+      <aside class="farmer-info-card">
+        <h3>Why Farmers Win on AniDirect</h3>
+        <ul class="benefit-list">
+          <li>
+            <strong>+85% Higher Farm-Gate Income</strong>
+            <span>Bypass multi-layer traders and set your own fair wholesale price per kilogram.</span>
+          </li>
+          <li>
+            <strong>Guaranteed Bulk Demand</strong>
+            <span>Barangay members and pantry donors lock in your harvest before you pick a single crop.</span>
+          </li>
+          <li>
+            <strong>Single Barangay Drop-Off</strong>
+            <span>Deliver one bulk truckload to the Barangay Hall instead of 50 separate addresses.</span>
+          </li>
+        </ul>
+      </aside>
+    </div>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/farmer.js"></script>
+</body>
+</html>
