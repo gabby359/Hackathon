@@ -26,7 +26,6 @@ const DEMO_ACCOUNTS = {
   },
 };
 
-// 4 Verified Members of Brgy. San Francisco
 const INITIAL_MEMBERS = [
   {
     id: "mem-1",
@@ -70,7 +69,6 @@ const INITIAL_MEMBERS = [
   },
 ];
 
-// Harvest pools showing ONLY Brgy. San Francisco members & totals
 const INITIAL_HARVESTS = [
   {
     id: "batch-1",
@@ -81,10 +79,10 @@ const INITIAL_HARVESTS = [
     harvestWindow: "Nov 25 – Nov 30",
     bulkPricePerKg: 42,
     marketPricePerKg: 85,
-    targetBulkKg: 50, // 50 kg bulk crate for Brgy. San Francisco only
-    currentPooledKg: 38, // 20 kg household orders + 18 kg pantry ambag (Add 12 kg in demo to lock 100%!)
-    brgyMembersJoined: 3, // 3 of 4 verified Brgy. San Francisco members
-    pantryAmbagKg: 18, // Juan (10 kg) + Carlo & Bea (8 kg)
+    targetBulkKg: 50,
+    currentPooledKg: 38,
+    brgyMembersJoined: 3,
+    pantryAmbagKg: 18,
     ambagDonorsCount: 2,
     imageUrl:
       "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?auto=format&fit=crop&w=600&q=80",
@@ -98,10 +96,10 @@ const INITIAL_HARVESTS = [
     harvestWindow: "Nov 22 – Nov 28",
     bulkPricePerKg: 35,
     marketPricePerKg: 65,
-    targetBulkKg: 60, // 60 kg bulk crate for Brgy. San Francisco only
-    currentPooledKg: 45, // 20 kg household orders + 25 kg pantry ambag
-    brgyMembersJoined: 4, // All 4 verified Brgy. San Francisco members
-    pantryAmbagKg: 25, // Aling Nena (25 kg)
+    targetBulkKg: 60,
+    currentPooledKg: 45,
+    brgyMembersJoined: 4,
+    pantryAmbagKg: 25,
     ambagDonorsCount: 1,
     imageUrl:
       "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=600&q=80",
@@ -115,15 +113,21 @@ const INITIAL_HARVESTS = [
     harvestWindow: "Dec 5 – Dec 12",
     bulkPricePerKg: 68,
     marketPricePerKg: 130,
-    targetBulkKg: 50, // 50 kg sack goal for Brgy. San Francisco only
-    currentPooledKg: 25, // 10 kg household orders + 15 kg pantry ambag
-    brgyMembersJoined: 2, // 2 of 4 verified Brgy. San Francisco members
-    pantryAmbagKg: 15, // Dr. Ramon (15 kg)
+    targetBulkKg: 50,
+    currentPooledKg: 25,
+    brgyMembersJoined: 2,
+    pantryAmbagKg: 15,
     ambagDonorsCount: 1,
     imageUrl:
       "https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?auto=format&fit=crop&w=600&q=80",
   },
 ];
+
+const ROLE_HOME_PAGES = {
+  member: "index.html",
+  barangay: "barangay.html",
+  farmer: "farmer.html",
+};
 
 function getCurrentUser() {
   const saved = localStorage.getItem(USER_SESSION_KEY);
@@ -170,9 +174,41 @@ function setCustomMemberUser(name, barangay) {
 
 function redirectUserByRole() {
   const user = getCurrentUser();
-  if (user.role === "farmer") window.location.href = "farmer.html";
-  else if (user.role === "barangay") window.location.href = "barangay.html";
-  else window.location.href = "index.html";
+  window.location.href = ROLE_HOME_PAGES[user.role] || "index.html";
+}
+
+function enforceRoleAccess() {
+  const path = window.location.pathname.toLowerCase();
+  if (path.endsWith("login.html")) return;
+
+  const user = getCurrentUser();
+  const allowedPage = ROLE_HOME_PAGES[user.role] || "index.html";
+
+  const isOnMemberPage = path.endsWith("index.html") || path.endsWith("/");
+  const isOnBarangayPage = path.endsWith("barangay.html");
+  const isOnFarmerPage = path.endsWith("farmer.html");
+
+  if (
+    (user.role === "member" && !isOnMemberPage) ||
+    (user.role === "barangay" && !isOnBarangayPage) ||
+    (user.role === "farmer" && !isOnFarmerPage)
+  ) {
+    window.location.href = allowedPage;
+  }
+}
+
+function renderRoleNavbar() {
+  const navSwitcher = document.querySelector(".role-switcher");
+  if (!navSwitcher) return;
+
+  const user = getCurrentUser();
+  if (user.role === "member") {
+    navSwitcher.innerHTML = `<a href="index.html" class="tab-btn active">🏘️ Member Pool</a>`;
+  } else if (user.role === "barangay") {
+    navSwitcher.innerHTML = `<a href="barangay.html" class="tab-btn active">🏛️ Barangay Hub</a>`;
+  } else if (user.role === "farmer") {
+    navSwitcher.innerHTML = `<a href="farmer.html" class="tab-btn active">🚜 Farmer Portal</a>`;
+  }
 }
 
 function getHarvests() {
@@ -240,6 +276,78 @@ function recordMemberAmbag(
   saveVerifiedMembers(members);
 }
 
+function renderReadOnlyHarvestFeed(containerId, highlightFarmerName = null) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const harvests = getHarvests();
+  const totalVerifiedMembers = getVerifiedMembers().length;
+
+  container.innerHTML = harvests
+    .map((item) => {
+      const percent = Math.min(
+        100,
+        Math.round((item.currentPooledKg / item.targetBulkKg) * 100),
+      );
+      const isLocked = item.currentPooledKg >= item.targetBulkKg;
+      const savings = item.marketPricePerKg - item.bulkPricePerKg;
+      const isOwnPost =
+        highlightFarmerName &&
+        item.farmerName.toLowerCase() === highlightFarmerName.toLowerCase();
+
+      return `
+        <div class="card" style="${isOwnPost ? "border: 2px solid var(--accent);" : ""}">
+          <div class="card-img-wrap">
+            <img src="${item.imageUrl}" alt="${item.cropName}" class="card-img" />
+            <span class="status-ribbon ${isLocked ? "locked" : ""}">
+              ${isLocked ? "✓ Brgy. Quota Locked" : `${percent}% Pooled`}
+            </span>
+          </div>
+
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="badge">📅 ${item.harvestMonth}</span>
+              <span class="location">📍 ${item.location}</span>
+            </div>
+
+            <h3>${item.cropName}</h3>
+            <p class="farmer-name">
+              Posted by <strong>${item.farmerName}</strong>
+              ${isOwnPost ? `<span class="farmer-badge" style="margin-left:0.35rem;">Your Listing</span>` : ""}
+            </p>
+
+            <div class="price-box">
+              <div class="bulk-price">₱${item.bulkPricePerKg}<span>/kg</span></div>
+              <div class="market-compare">
+                <span class="old-price">Market: ₱${item.marketPricePerKg}/kg</span>
+                <span class="savings-pill">Save ₱${savings}/kg</span>
+              </div>
+            </div>
+
+            <div class="ambag-box">
+              <div>
+                <span class="ambag-title">🧺 Brgy. Pantry Ambag: ${item.pantryAmbagKg || 0} kg</span>
+                <span class="ambag-sub">${Math.min(totalVerifiedMembers, item.ambagDonorsCount || 0)} of ${totalVerifiedMembers} brgy. members chipped in</span>
+              </div>
+            </div>
+
+            <div class="pool-section" style="margin-bottom: 0;">
+              <div class="pool-labels">
+                <span>${item.currentPooledKg} / ${item.targetBulkKg} kg (Brgy. San Francisco)</span>
+                <span>${percent}%</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill ${isLocked ? "locked" : ""}" style="width: ${percent}%"></div>
+              </div>
+              <p class="pool-note">Harvest Window: ${item.harvestWindow}</p>
+            </div>
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+}
+
 function showToast(message) {
   const toast = document.getElementById("toast");
   if (!toast) return;
@@ -247,3 +355,6 @@ function showToast(message) {
   toast.classList.remove("hidden");
   setTimeout(() => toast.classList.add("hidden"), 3500);
 }
+
+enforceRoleAccess();
+document.addEventListener("DOMContentLoaded", renderRoleNavbar);

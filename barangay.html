@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AniDirect — Barangay Pantry Coordinator</title>
+  <link rel="icon" type="image/jpeg" href="logo.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -13,7 +14,7 @@
   <header class="navbar">
     <div class="nav-container">
       <div class="brand">
-        <div class="logo-mark">🏛️</div>
+        <img src="logo.png" alt="AniDirect Logo" class="logo-mark" />
         <div>
           <div class="brand-title-row">
             <h1>AniDirect</h1>
@@ -24,11 +25,7 @@
       </div>
 
       <div class="nav-actions">
-        <nav class="role-switcher">
-          <a href="index.html" class="tab-btn">🏘️ Member Pool</a>
-          <a href="barangay.html" class="tab-btn active">🏛️ Barangay Hub</a>
-          <a href="farmer.html" class="tab-btn">🚜 Farmer Portal</a>
-        </nav>
+        <nav class="role-switcher"></nav>
         <a href="login.html" class="switch-account-btn">Switch Account</a>
       </div>
     </div>
@@ -73,7 +70,7 @@
     <!-- Incoming Harvest Batches Table -->
     <div class="form-card" style="max-width: 100%; overflow-x: auto;">
       <h3 style="margin-bottom: 0.25rem;">Incoming Farm Harvest Batches &amp; Pantry Breakdown</h3>
-      <p class="subtitle" style="margin-bottom: 1rem;">Barangay officials can sponsor +20 kg from the Nutrition Fund to help lock pools faster.</p>
+      <p class="subtitle" style="margin-bottom: 1rem;">Barangay officials can sponsor +10 kg from the Nutrition Fund to help lock pools faster.</p>
 
       <table class="manifest-table">
         <thead>
@@ -88,6 +85,17 @@
         </thead>
         <tbody id="barangay-manifest-body"></tbody>
       </table>
+    </div>
+
+    <!-- Live Farmer Harvest Posts Feed -->
+    <div style="margin-top: 2.5rem;">
+      <div class="section-header">
+        <div>
+          <h2>Active Farmer Harvest Posts</h2>
+          <p class="subtitle">Live listings posted by partner farmers available to Brgy. San Francisco.</p>
+        </div>
+      </div>
+      <div id="barangay-harvest-feed" class="grid"></div>
     </div>
   </main>
 

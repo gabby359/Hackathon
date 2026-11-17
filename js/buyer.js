@@ -2,12 +2,14 @@ function initMemberHeader() {
   const user = getCurrentUser();
   const barangayName = user.barangay || "Brgy. San Francisco, General Trias";
 
-  document.getElementById("active-user-subtitle").textContent =
-    `${user.name} (${user.badge})`;
+  document.getElementById("active-user-subtitle").innerHTML =
+    `Logged in as <mark class="user-highlight">${user.name}</mark> (${user.badge})`;
+
   document.getElementById("user-barangay-badge").textContent =
     `📍 ${barangayName} Pool Only`;
-  document.getElementById("welcome-headline").textContent =
-    `Welcome, ${user.name}! Order with your ${barangayName} neighbors or ambag to your local pantry.`;
+
+  document.getElementById("welcome-headline").innerHTML =
+    `Welcome, <mark class="user-highlight">${user.name}</mark>! Order with your ${barangayName} neighbors or ambag to your local pantry.`;
 }
 
 function renderImpactStats() {
@@ -94,16 +96,18 @@ function renderHarvests() {
               </div>
             </div>
 
-            <!-- Your Barangay's Pantry Ambag Section -->
             <div class="ambag-box">
               <div>
                 <span class="ambag-title">🧺 Brgy. Pantry Ambag: ${item.pantryAmbagKg || 0} kg</span>
                 <span class="ambag-sub">${donorCount} of ${totalVerifiedMembers} verified brgy. members chipped in</span>
               </div>
-              <button class="ambag-btn" onclick="openAmbagOnlyModal('${item.id}')">+ Ambag</button>
+              ${
+                isLocked
+                  ? ""
+                  : `<button class="ambag-btn" onclick="openAmbagOnlyModal('${item.id}')">+ Ambag</button>`
+              }
             </div>
 
-            <!-- Your Barangay's Bulk Pool Progress Bar -->
             <div class="pool-section">
               <div class="pool-labels">
                 <span>${item.currentPooledKg} / ${item.targetBulkKg} kg (Your Brgy.)</span>
@@ -121,10 +125,18 @@ function renderHarvests() {
               </p>
             </div>
 
-            <div class="order-row">
-              <input type="number" id="qty-${item.id}" min="1" placeholder="kg" />
-              <button class="order-btn" onclick="openCheckoutModal('${item.id}')">Pre-Order Share</button>
-            </div>
+            ${
+              isLocked
+                ? `<div class="order-row" style="justify-content: center; background: #fef3c7; border-radius: 9px; padding: 0.65rem; border: 1px solid #fde68a;">
+                     <span style="font-size: 0.8rem; font-weight: 700; color: #92400e;">
+                       🔒 Pool Closed &amp; Locked for Brgy. San Francisco
+                     </span>
+                   </div>`
+                : `<div class="order-row">
+                     <input type="number" id="qty-${item.id}" min="1" max="${remainingKg}" placeholder="kg" />
+                     <button class="order-btn" onclick="openCheckoutModal('${item.id}')">Pre-Order Share</button>
+                   </div>`
+            }
           </div>
         </div>
       `;
@@ -165,7 +177,11 @@ function openCheckoutModal(batchId) {
       <span id="modal-total-display">₱${(personalCost + item.bulkPricePerKg).toLocaleString()}</span>
     </div>
 
-    <button class="confirm-pay-btn" style="margin-top: 0.85rem;" onclick="confirmPoolOrder('${item.id}', ${personalKg}, false)">
+    <div class="escrow-note">
+      🛡️ <strong>All-or-Nothing Escrow:</strong> If your barangay pool doesn't reach 100% by the cutoff, 100% of your money is automatically refunded.
+    </div>
+
+    <button class="confirm-pay-btn" onclick="confirmPoolOrder('${item.id}', ${personalKg}, false)">
       Confirm &amp; Pool via E-Wallet
     </button>
   `;
@@ -289,10 +305,4 @@ function resetDemoData() {
 document.addEventListener("DOMContentLoaded", () => {
   initMemberHeader();
   renderHarvests();
-
-  const newlyAddedCrop = sessionStorage.getItem("justPublishedCrop");
-  if (newlyAddedCrop) {
-    showToast(`🌾 "${newlyAddedCrop}" posted by Farmer!`);
-    sessionStorage.removeItem("justPublishedCrop");
-  }
 });

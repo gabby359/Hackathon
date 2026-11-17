@@ -59,20 +59,20 @@ body {
 }
 
 .logo-mark {
-  width: 42px;
-  height: 42px;
-  background: var(--primary-light);
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
   border-radius: 12px;
-  display: grid;
-  place-items: center;
-  font-size: 1.35rem;
+  background: #cdfce0;
+  border: 1px solid #bbf7d0;
+  display: block;
 }
 
 .logo-mark.large {
-  width: 56px;
-  height: 56px;
-  font-size: 1.75rem;
-  margin: 0 auto 0.65rem;
+  width: 68px;
+  height: 68px;
+  border-radius: 16px;
+  margin: 0 auto 0.75rem;
 }
 
 .brand-title-row {
@@ -179,6 +179,23 @@ body {
   background: #fef2f2;
 }
 
+/* Highlighted Logged-in User Name */
+.user-highlight {
+  background: #fef08a;
+  color: #14532d;
+  font-weight: 800;
+  padding: 0.1rem 0.45rem;
+  border-radius: 6px;
+  border: 1px solid #fde047;
+}
+
+.impact-banner .user-highlight {
+  background: #fde047;
+  color: #14532d;
+  border: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
 /* Impact Hero Banner */
 .impact-banner {
   background: linear-gradient(135deg, #14532d 0%, #166534 60%, #15803d 100%);
@@ -197,7 +214,7 @@ body {
 }
 
 .impact-intro {
-  max-width: 480px;
+  max-width: 500px;
 }
 
 .hub-tag {
@@ -213,7 +230,7 @@ body {
 .impact-intro h2 {
   font-size: 1.3rem;
   font-weight: 700;
-  line-height: 1.3;
+  line-height: 1.35;
 }
 
 .impact-stats {

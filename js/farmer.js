@@ -4,9 +4,11 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("farmerName").value = user.name;
     document.getElementById("location").value =
       user.location || "Indang, Cavite";
-    document.getElementById("farmer-account-subtitle").textContent =
-      `${user.name} • ${user.location}`;
+    document.getElementById("farmer-account-subtitle").innerHTML =
+      `Logged in as <mark class="user-highlight">${user.name}</mark> • ${user.location || "Indang, Cavite"}`;
   }
+
+  renderReadOnlyHarvestFeed("farmer-harvest-feed", user.name);
 });
 
 function previewFarmerImage(event) {
@@ -27,6 +29,7 @@ function previewFarmerImage(event) {
 function handleFarmerSubmit(event) {
   event.preventDefault();
 
+  const user = getCurrentUser();
   const fileInput = document.getElementById("cropPhoto");
   const newBatch = {
     id: `batch-${Date.now()}`,
@@ -46,18 +49,26 @@ function handleFarmerSubmit(event) {
       "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&w=600&q=80",
   };
 
-  const saveAndRedirect = (finalImageUrl) => {
+  const saveAndRefresh = (finalImageUrl) => {
     newBatch.imageUrl = finalImageUrl;
     addNewHarvest(newBatch);
-    sessionStorage.setItem("justPublishedCrop", newBatch.cropName);
-    window.location.href = "index.html";
+
+    document.getElementById("cropName").value = "";
+    document.getElementById("bulkPrice").value = "";
+    document.getElementById("marketPrice").value = "";
+    document.getElementById("targetKg").value = "";
+    document.getElementById("cropPhoto").value = "";
+    document.getElementById("photo-preview").classList.add("hidden");
+
+    renderReadOnlyHarvestFeed("farmer-harvest-feed", user.name);
+    showToast(`🌾 "${newBatch.cropName}" published to Barangay Pools!`);
   };
 
   if (fileInput.files && fileInput.files[0]) {
     const reader = new FileReader();
-    reader.onload = () => saveAndRedirect(reader.result);
+    reader.onload = () => saveAndRefresh(reader.result);
     reader.readAsDataURL(fileInput.files[0]);
   } else {
-    saveAndRedirect(newBatch.imageUrl);
+    saveAndRefresh(newBatch.imageUrl);
   }
 }

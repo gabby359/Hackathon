@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AniDirect — Farmer Portal</title>
+  <link rel="icon" type="image/jpeg" href="logo.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -13,7 +14,7 @@
   <header class="navbar">
     <div class="nav-container">
       <div class="brand">
-        <div class="logo-mark">🚜</div>
+        <img src="logo.png" alt="AniDirect Logo" class="logo-mark" />
         <div>
           <div class="brand-title-row">
             <h1>AniDirect</h1>
@@ -24,11 +25,7 @@
       </div>
 
       <div class="nav-actions">
-        <nav class="role-switcher">
-          <a href="index.html" class="tab-btn">🏘️ Member Pool</a>
-          <a href="barangay.html" class="tab-btn">🏛️ Barangay Hub</a>
-          <a href="farmer.html" class="tab-btn active">🚜 Farmer Portal</a>
-        </nav>
+        <nav class="role-switcher"></nav>
         <a href="login.html" class="switch-account-btn">Switch Account</a>
       </div>
     </div>
@@ -85,7 +82,7 @@
             </div>
             <div class="form-group">
               <label>Bulk Goal (kg)</label>
-              <input type="number" id="targetKg" placeholder="200" min="10" required />
+              <input type="number" id="targetKg" placeholder="50" min="10" required />
             </div>
           </div>
 
@@ -114,10 +111,21 @@
           </li>
           <li>
             <strong>Single Barangay Drop-Off</strong>
-            <span>Deliver one bulk truckload to the Barangay Hall instead of 50 separate addresses.</span>
+            <span>Deliver one bulk load to the Barangay Hall instead of dozens of separate addresses.</span>
           </li>
         </ul>
       </aside>
+    </div>
+
+    <!-- Live Farmer Harvest Posts Feed -->
+    <div style="margin-top: 2.5rem;">
+      <div class="section-header">
+        <div>
+          <h2>Published Farmer Harvest Posts</h2>
+          <p class="subtitle">All active harvest batches currently visible to Barangay pools (your listings are highlighted).</p>
+        </div>
+      </div>
+      <div id="farmer-harvest-feed" class="grid"></div>
     </div>
   </main>
 
